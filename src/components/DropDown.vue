@@ -1,149 +1,66 @@
-<template>
+<template v-slot="option"  slot-scope="props">
+
   <h3>SEARCHABLE DROPDOWN</h3>
-  <div class="sections">
-    <section class="dropdown-wrapper">
-      <div @click="isVisibleUser = !isVisibleUser" class="selected-item">
-        <span v-if="selectedItem" class="selected-text">{{
-          selectedItem.name
-        }}</span>
-        <span v-else class="selected-text">Поиск по имени</span>
-        <svg
-          :class="isVisibleUser ? 'dropdown' : ''"
-          class="dropdown-icon"
-          width="13"
-          height="7"
-          viewBox="0 0 13 7"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.10793 6.76714C6.78181 7.07762 6.25307 7.07762 5.92696 6.76714L0.244587 1.35721C-0.0815288 1.04673 -0.0815289 0.543341 0.244586 0.232861C0.570703 -0.07762 1.09944 -0.0776205 1.42556 0.23286L6.50041 5.0644L11.5744 0.233644C11.9006 -0.0768371 12.4293 -0.0768371 12.7554 0.233644C13.0815 0.544124 13.0815 1.04751 12.7554 1.35799L7.23227 6.61633C7.1981 6.67005 7.15666 6.72075 7.10793 6.76714Z"
-            fill="#898989"
-          />
-        </svg>
-      </div>
-      <div v-if="isVisibleUser" class="dropdown-popover">
-        <input v-model="searchUser" type="text" placeholder="Поиск" />
-        <p v-if="filteredUser.length === 0">Пользователь не найден</p>
-        <div class="options">
-          <ul>
-            <li
-              @click="selectItem(user)"
-              v-for="(user, index) in filteredUser"
-              :key="`user-${index}`"
-            >
-              {{ user.name }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section class="dropdown-wrapper">
-      <div
-        @click="isVisibleUsername = !isVisibleUsername"
-        class="selected-item"
+  <section class="dropdown-wrapper">
+    <div @click="isVisibleUser = !isVisibleUser" class="selected-item">
+      <span v-if="selectedItem" class="selected-text" >
+       
+         {{`${selectedItem.name},${selectedItem.username},${selectedItem.email}
+        `}}
+         
+  
+      </span>
+      <span v-else class="selected-text">Поиск по имени</span>
+      <svg
+        :class="isVisibleUser ? 'dropdown' : ''"
+        class="dropdown-icon"
+        width="13"
+        height="7"
+        viewBox="0 0 13 7"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <span v-if="selectedItem" class="selected-text">{{
-          selectedItem.username
-        }}</span>
-        <span v-else class="selected-text">Поиск по логину</span>
-        <svg
-          :class="isVisibleUsername ? 'dropdown' : ''"
-          class="dropdown-icon"
-          width="13"
-          height="7"
-          viewBox="0 0 13 7"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.10793 6.76714C6.78181 7.07762 6.25307 7.07762 5.92696 6.76714L0.244587 1.35721C-0.0815288 1.04673 -0.0815289 0.543341 0.244586 0.232861C0.570703 -0.07762 1.09944 -0.0776205 1.42556 0.23286L6.50041 5.0644L11.5744 0.233644C11.9006 -0.0768371 12.4293 -0.0768371 12.7554 0.233644C13.0815 0.544124 13.0815 1.04751 12.7554 1.35799L7.23227 6.61633C7.1981 6.67005 7.15666 6.72075 7.10793 6.76714Z"
-            fill="#898989"
-          />
-        </svg>
+        <path
+          d="M7.10793 6.76714C6.78181 7.07762 6.25307 7.07762 5.92696 6.76714L0.244587 1.35721C-0.0815288 1.04673 -0.0815289 0.543341 0.244586 0.232861C0.570703 -0.07762 1.09944 -0.0776205 1.42556 0.23286L6.50041 5.0644L11.5744 0.233644C11.9006 -0.0768371 12.4293 -0.0768371 12.7554 0.233644C13.0815 0.544124 13.0815 1.04751 12.7554 1.35799L7.23227 6.61633C7.1981 6.67005 7.15666 6.72075 7.10793 6.76714Z"
+          fill="#898989"
+        />
+      </svg>
+    </div>
+    <div v-if="isVisibleUser" class="dropdown-popover">
+      <input  v-model="searchUser" type="text" placeholder="Поиск"/>
+      <p v-if="filteredUser.length === 0">Пользователь не найден</p>
+      <div class="options">
+        <ul  >
+          <li @click="selectItem(user)"
+            v-for="(user, index) in filteredUser"
+            :key="`user-${index}`"
+          >
+           <input type="checkbox" id='1' >
+           <label for="1">
+             {{user.name}}
+          </label>
+          </li>
+        </ul>
       </div>
-      <div v-if="isVisibleUsername" class="dropdown-popover">
-        <input v-model="searchUsername" type="text" placeholder="Поиск" />
-        <p v-if="filteredUser.length === 0">Логин не найден</p>
-        <div class="options">
-          <ul>
-            <li
-              @click="selectItem(user)"
-              v-for="(user, index) in filteredUser"
-              :key="`user-${index}`"
-            >
-              {{ user.username }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-    <section class="dropdown-wrapper">
-      <div @click="isVisibleEmail = !isVisibleEmail" class="selected-item">
-        <span v-if="selectedItem" class="selected-text">{{
-          selectedItem.email
-        }}</span>
-        <span v-else class="selected-text">Поиск по почте</span>
-        <svg
-          :class="isVisibleEmail ? 'dropdown' : ''"
-          class="dropdown-icon"
-          width="13"
-          height="7"
-          viewBox="0 0 13 7"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.10793 6.76714C6.78181 7.07762 6.25307 7.07762 5.92696 6.76714L0.244587 1.35721C-0.0815288 1.04673 -0.0815289 0.543341 0.244586 0.232861C0.570703 -0.07762 1.09944 -0.0776205 1.42556 0.23286L6.50041 5.0644L11.5744 0.233644C11.9006 -0.0768371 12.4293 -0.0768371 12.7554 0.233644C13.0815 0.544124 13.0815 1.04751 12.7554 1.35799L7.23227 6.61633C7.1981 6.67005 7.15666 6.72075 7.10793 6.76714Z"
-            fill="#898989"
-          />
-        </svg>
-      </div>
-      <div v-if="isVisibleEmail" class="dropdown-popover">
-        <input v-model="searchEmail" type="text" placeholder="Поиск" />
-        <p v-if="filteredUser.length === 0">Почта не найдена</p>
-        <div class="options">
-          <ul>
-            <li
-              @click="selectItem(user)"
-              v-for="(user, index) in filteredUser"
-              :key="`user-${index}`"
-            >
-              {{ user.email }}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      searchUser: "",
-      searchUsername: "",
-      searchEmail: "",
+      searchUser: '',
       selectedItem: null,
       isVisibleUser: false,
-      isVisibleUsername: false,
-      isVisibleEmail: false,
       userArray: [],
     };
   },
   computed: {
     filteredUser() {
-      const users =
-        this.searchUser.toLowerCase() ||
-        this.searchUsername.toLowerCase() ||
-        this.searchEmail.toLowerCase();
-      if (this.searchUser === "") {
-        if (this.searchUsername === "") {
-          if (this.searchEmail === "") {
-            return this.userArray;
-          }
-        }
+      const users = this.searchUser.toLowerCase();
+      if (this.searchUser === '') {
+        return this.userArray;
       }
       return this.userArray.filter((user) => {
         return Object.values(user).some((word) =>
@@ -155,10 +72,14 @@ export default {
   methods: {
     selectItem(user) {
       this.selectedItem = user;
-      this.isVisibleUser = false;
-      this.isVisibleUsername = false;
-      this.isVisibleEmail = false;
+      
     },
+  highlight(text){
+    if(!this.query) return text;
+    let regEx = new RegExp(this.query,'i');
+    let index = text.search(regEx)
+    let replaceText = text.substring(index,index + this.query.length);
+    return text.replace(regEx, `<span class="autoComplete_highlighted">${replaceText}</span>`);}
   },
   mounted() {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -178,10 +99,6 @@ h3 {
 }
 section {
   padding-left: 25px;
-}
-
-.sections {
-  display: flex;
 }
 
 .dropdown-wrapper {
@@ -252,5 +169,9 @@ li {
 p {
   text-align: center;
   padding-bottom: 12px;
+}
+
+.autoComplete_highlighted{
+  color: red;
 }
 </style>
