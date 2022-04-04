@@ -1,14 +1,12 @@
 <template v-slot="option"  slot-scope="props">
-
   <h3>SEARCHABLE DROPDOWN</h3>
   <section class="dropdown-wrapper">
     <div @click="isVisibleUser = !isVisibleUser" class="selected-item">
-      <span v-if="selectedItem" class="selected-text" >
-       
-         {{`${selectedItem.name},${selectedItem.username},${selectedItem.email}
-        `}}
-         
-  
+      <span v-if="selectedItem" class="selected-text">
+        {{
+          `${value}
+        `
+        }}<wbr>
       </span>
       <span v-else class="selected-text">Поиск по имени</span>
       <svg
@@ -27,18 +25,21 @@
       </svg>
     </div>
     <div v-if="isVisibleUser" class="dropdown-popover">
-      <input  v-model="searchUser" type="text" placeholder="Поиск"/>
+      <input class="input-dropdown-popover"  v-model="searchUser" type="text" placeholder="Поиск" />
       <p v-if="filteredUser.length === 0">Пользователь не найден</p>
       <div class="options">
-        <ul  >
-          <li @click="selectItem(user)"
-            v-for="(user, index) in filteredUser"
-            :key="`user-${index}`"
-          >
-           <input type="checkbox" id='1' >
-           <label for="1">
-             {{user.name}}
-          </label>
+       
+        <ul>
+           
+          <li
+            @click="selectItem(user)"
+            v-for="user in filteredUser"
+            :key="user.id"
+            >
+            <input class="li_checkbox" type="checkbox" :id="user.id" :value="`${user.region}${user.district}${user.city}`" v-model="value"/>
+            <label :for="user.id">
+              {{`${user.region}${user.district}${user.city}`}}
+            </label>
           </li>
         </ul>
       </div>
@@ -47,13 +48,19 @@
 </template>
 
 <script>
+
 export default {
+ 
+  props:{
+    data:[Array]
+  },
   data() {
     return {
       searchUser: '',
       selectedItem: null,
       isVisibleUser: false,
-      userArray: [],
+      userArray: this.data,
+      value: []
     };
   },
   computed: {
@@ -68,26 +75,22 @@ export default {
         );
       });
     },
+    
   },
   methods: {
     selectItem(user) {
       this.selectedItem = user;
-      
     },
-  highlight(text){
-    if(!this.query) return text;
-    let regEx = new RegExp(this.query,'i');
-    let index = text.search(regEx)
-    let replaceText = text.substring(index,index + this.query.length);
-    return text.replace(regEx, `<span class="autoComplete_highlighted">${replaceText}</span>`);}
-  },
-  mounted() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(json);
-        this.userArray = json;
-      });
+    highlight(user) {
+      if (!this.query) return user;
+      let regEx = new RegExp(this.query, "i");
+      let index = user.search(regEx);
+      let replaceText = user.substring(index, index + this.query.length);
+      return user.replace(
+        regEx,
+        `<li class="autoComplete_highlighted">${replaceText}</li>`
+      );
+    },
   },
 };
 </script>
@@ -139,7 +142,7 @@ section {
   transform: rotate(0deg);
 }
 
-input {
+.input-dropdown-popover {
   margin-left: 8px;
   margin-top: 10px;
   margin-bottom: 11px;
@@ -161,9 +164,18 @@ ul {
   max-height: 210px;
 }
 li {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
   padding-top: 13px;
   padding-bottom: 12px;
   padding-left: 20px;
+}
+
+.li_checkbox{
+  position: relative;
+  margin-right: 10px;
 }
 
 p {
@@ -171,7 +183,7 @@ p {
   padding-bottom: 12px;
 }
 
-.autoComplete_highlighted{
-  color: red;
+.autoComplete_highlighted {
+  color: #10CF68;
 }
 </style>

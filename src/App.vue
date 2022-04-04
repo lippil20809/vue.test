@@ -1,22 +1,27 @@
 <template>
   <div class="app" :class="mode">
     <HeaderText :mode="mode" @toggle="toggle" />
-    <DropDown />
+    <DropDown :data='users'/>
   </div>
 </template>
 
 <script>
 import HeaderText from "./components/HeaderText.vue";
 import DropDown from "./components/DropDown.vue";
+import {data_set} from './components/data-sets'
 
 export default {
   name: "app",
   data() {
     return {
       mode: "dark",
+      users:[]
     };
   },
-  components: {
+  created(){
+    this.users = data_set
+  },
+   components: {
     HeaderText,
     DropDown,
   },
